@@ -20,8 +20,16 @@ app.get('/truyen-kieu', (req, res) => {
     readable_stream.pipe(upperCaseTr).pipe(res);
 });
 
-app.get('/big-file', () => {
-
+app.get('/big-file', (req, res) => {
+    const readable_stream = fs.createReadStream('./1gb.test');
+    const writable_stream = fs.createWriteStream('/dev/null');
+    const start_time = new Date();
+    readable_stream.on('close', () => {
+        const end_time = new Date();
+        console.log('Time elapsed (ms): ', end_time - start_time);
+        res.end('Done');
+    });
+    readable_stream.pipe(writable_stream);
 });
 
 app.listen(PORT, HOST, () => {console.log(`Server is listening on ${HOST}:${PORT}`)});

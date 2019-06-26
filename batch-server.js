@@ -18,8 +18,18 @@ app.get('/truyen-kieu', (req, res) => {
     });
 });
 
-app.get('/big-file', () => {
-
+app.get('/big-file', (req, res) => {
+    const start_time = new Date();
+    fs.readFile('./1gb.test', (err, data) => {
+        if (err) {
+            res.write(err.message);
+        } else {
+            res.write('Done');
+        }
+        const end_time = new Date();
+        console.log('Time elapsed (ms): ', end_time - start_time);
+        res.end();
+    });
 });
 
 app.listen(PORT, HOST, () => {console.log(`Server is listening on ${HOST}:${PORT}`)});
